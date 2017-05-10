@@ -1,0 +1,83 @@
+<!-- You might want to try something fancier: -->
+<!-- html/nunjucks docs: https://mozilla.github.io/nunjucks/ -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>MFK!</title>
+    <meta name="MFK" content="">
+    <link id="favicon" rel="icon" href="https://glitch.com/edit/favicon-app.ico" type="image/x-icon">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- <link rel="stylesheet" href="/main.css"> -->
+    <link href="https://fonts.googleapis.com/css?family=Bitter" rel="stylesheet">
+  </head>
+  <body>
+    <header>
+      <div class="flexy">
+        <img src="https://cdn.glitch.com/dfde8d43-d4f7-4668-a342-9a96a5784d13%2Fmarry.png?1492975491863">
+        <img src="https://cdn.glitch.com/dfde8d43-d4f7-4668-a342-9a96a5784d13%2Ffuck.png?1492975491656">
+        <img src="https://cdn.glitch.com/dfde8d43-d4f7-4668-a342-9a96a5784d13%2Fkill.png?1492975491688">
+      </div>
+    </header>
+
+    <button class="reset">
+      UGH I hate this RESET EVERYTHING
+    </button>
+    <button class="new-people">
+      UGH I can't decide GIVE ME DIFFERENT PEOPLE
+    </button>
+    <!--     <button class="clear-stats">
+      UGH GET RID OF THOSE DUMB STATS I DONT CARE WHAT OTHER PEOPLE DID
+    </button> -->
+    <div id="stats">
+    </div>
+    <table>
+      <caption><div id="vote">VOTE!</div></caption>
+      <thead>
+        <tr>
+          <th>MARRY</th>
+          <th>FUCK</th>
+          <th>KILL</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- <li *ngFor="let hero of heroes"> -->
+        <tr *ngFor="let person of people">
+          <td>
+            <div class="clickable"  (click)="onSelect(person, 'marry')" [ngClass]="available_selected_disabled(person, 'marry')" data-category="marry">{{person.name}}</div>
+          </td>
+          <td>
+            <div class="clickable" (click)="onSelect(person, 'fuck')" [ngClass]="available_selected_disabled(person, 'fuck')" data-category="fuck">{{person.name}}</div>
+          </td>
+          <td>
+            <div class="clickable" (click)="onSelect(person, 'kill')" [ngClass]="available_selected_disabled(person, 'kill')" data-category="kill">{{person.name}}</div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div>
+      <p>Who do you wanna add?</p>
+      <form>
+        <input type="text" maxlength="100" placeholder="Someone">
+        <button type="submit">Submit</button>
+      </form>
+      <section class="people">
+        <ul id="people">
+        </ul>
+      </section>
+    </div>
+
+    <footer>
+      <a href="https://glitch.com">
+        Remix this in Glitch
+      </a>
+    </footer>
+
+    <!-- Your web-app is https, so your scripts need to be too -->
+    <script src="https://code.jquery.com/jquery-2.2.1.min.js"
+            integrity="sha256-gvQgAFzTH6trSrAWoH1iPo9Xc96QxSZ3feW6kem+O00="
+            crossorigin="anonymous"></script>
+  </body>
+</html>
