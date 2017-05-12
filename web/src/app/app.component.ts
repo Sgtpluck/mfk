@@ -1,49 +1,31 @@
 import { Component } from '@angular/core';
 
-export class Person {
-  id: number;
-  selected: boolean;
-  name: string;
-  marry: boolean;
-  fuck: boolean;
-  kill: boolean;
-}
+import { Person } from './person'
+import { PersonService } from './person.service';
 
-var PEOPLE: Person[] = [
-  {
-    id: 1,
-    name: 'Bobby Flay',
-    selected: true,
-    marry: false,
-    fuck: true,
-    kill: false
-  },
-  {
-    id: 2,
-    name: 'Mario Batali',
-    selected: true,
-    marry: true,
-    fuck: false,
-    kill: false
-  },
-  {
-    id: 1,
-    name: 'Guy Fieri',
-    selected: false,
-    marry: false,
-    fuck: false,
-    kill: false
-  }
-];
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+  providers: [PersonService]
 })
 export class AppComponent {
-  title = 'MFK';
-  people = PEOPLE;
+  errorMessage: string;
+  people: Person[];
+  mode = 'Observable';
+
+  constructor (private personService: PersonService) {}
+
+  ngOnInit(): void { this.getPeople(); }
+
+  getPeople(): void {
+    this.personService.getPeople()
+                     .subscribe(
+                       people => this.people = people,
+                       error =>  this.errorMessage = <any>error);
+  }
+
 
   available_selected_disabled(person: Person, action: string): string {
     if (person[action] === true) { return 'selected'; }
@@ -72,5 +54,17 @@ export class AppComponent {
       person[action] = true;
     }
   };
+
+  vote(): void {
+    let finished: boolean = true;
+    for (let person of this.people) {
+      if (person.selected === false ) { finished = false; }
+    }
+    if (finished) {
+      // post the results
+    } else {
+      // give an error message
+    }
+  }
 
 }
