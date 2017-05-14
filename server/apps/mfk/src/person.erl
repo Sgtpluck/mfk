@@ -47,7 +47,8 @@ build_ejson(#person{id=Id, name=Name}) ->
         {<<"name">>, Name},
         {<<"marry">>, false},
         {<<"fuck">>, false},
-        {<<"kill">>, false}
+        {<<"kill">>, false},
+        {<<"selected">>, <<"unselected">>}
     ]}.
 
 vote(_Ejson) ->

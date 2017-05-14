@@ -23,21 +23,24 @@ fetch_three_calls_sqerl_rec_fetch_three_then_processes_records() ->
                             {<<"name">>,<<"Hank Venture">>},
                             {<<"marry">>, false},
                             {<<"fuck">>, false},
-                            {<<"kill">>, false}
+                            {<<"kill">>, false},
+                            {<<"selected">>, <<"unselected">>}
                         ]},
                         {[
                             {<<"id">>,<<"2">>},
                             {<<"name">>,<<"Dean Venture">>},
                             {<<"marry">>, false},
                             {<<"fuck">>, false},
-                            {<<"kill">>, false}
+                            {<<"kill">>, false},
+                            {<<"selected">>, <<"unselected">>}
                         ]},
                         {[
                             {<<"id">>,<<"3">>},
                             {<<"name">>,<<"Doc Venture">>},
                             {<<"marry">>, false},
                             {<<"fuck">>, false},
-                            {<<"kill">>, false}
+                            {<<"kill">>, false},
+                            {<<"selected">>, <<"unselected">>}
                         ]}]
                     }]},
 
