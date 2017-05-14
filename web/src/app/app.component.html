@@ -21,15 +21,17 @@
       </div>
     </header>
 
-    <button class="reset">
-      UGH I hate this RESET EVERYTHING
-    </button>
-    <button class="new-people">
+      <div *ngFor="let stat of stats">
+        {{stat.name}} has been married {{stat.marry}} times,
+        fucked {{stat.fuck}} times, and
+        killed {{stat.kill}} times.
+      </div>
+    <button class="new-people" (click)="getPeople()">
       UGH I can't decide GIVE ME DIFFERENT PEOPLE
     </button>
-    <!--     <button class="clear-stats">
+        <button *ngIf="stats && stats.length > 0" class="clear-stats" (click)="stats=[]">
       UGH GET RID OF THOSE DUMB STATS I DONT CARE WHAT OTHER PEOPLE DID
-    </button> -->
+    </button>
     <div id="stats">
     </div>
     <table>

@@ -11,7 +11,8 @@
 
 -export([
          fetch_three/0,
-         vote/1
+         vote/1,
+         do_vote/1
         ]).
 
 -record(?MODULE, {id,
@@ -30,8 +31,12 @@
 '#statements'() ->
     [default,
        {fetch_all, sqerl_rec:gen_fetch_all(?MODULE, name)},
-       {fetch_three, "SELECT * FROM people ORDER BY RANDOM() LIMIT 3"}
+       {fetch_three, "SELECT * FROM people ORDER BY RANDOM() LIMIT 3"},
+       {marry, "UPDATE people SET  marry = (marry + 1) WHERE name = $1 RETURNING *"},
+       {fuck, "UPDATE people SET  fuck = (fuck + 1) WHERE name = $1 RETURNING *"},
+       {kill, "UPDATE people SET  kill = (kill + 1) WHERE name = $1 RETURNING *"}
     ].
+
 
 '#table_name'() ->
     "people".
@@ -51,5 +56,26 @@ build_ejson(#person{id=Id, name=Name}) ->
         {<<"selected">>, <<"unselected">>}
     ]}.
 
-vote(_Ejson) ->
-    {error, not_implemented}.
+vote(PersonEjson) ->
+    Stats = [ do_vote(Person) || Person <- PersonEjson],
+    {[{<<"stats">>, Stats}]}.
+
+do_vote(Person) ->
+    Name = ej:get([<<"name">>], Person),
+    Action = erlang:binary_to_atom(ej:get([<<"vote">>], Person), utf8),
+    [UpdatedPerson] = sqerl_rec:qfetch(person, Action, [Name]),
+    build_stat_ejson(UpdatedPerson).
+
+build_stat_ejson(#person{
+                         id=Id,
+                         name=Name,
+                         marry=Marry,
+                         fuck=Fuck,
+                         kill=Kill}) ->
+        {[
+            {<<"id">>, Id},
+            {<<"name">>, Name},
+            {<<"marry">>, Marry},
+            {<<"fuck">>, Fuck},
+            {<<"kill">>, Kill}
+        ]}.

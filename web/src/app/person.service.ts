@@ -22,6 +22,16 @@ export class PersonService {
     return body.candidates || { };
   }
 
+  vote(people): Observable<JSON[]> {
+    return this.http.put(this.peopleUrl, people)
+                   .map(this.extractStats)
+                   .catch(this.handleError);
+  }
+  private extractStats(res: Response) {
+    let body = res.json();
+    return body.stats || { };
+  }
+
   private handleError (error: Response | any) {
     // In a real world app, you might use a remote logging infrastructure
     let errMsg: string;

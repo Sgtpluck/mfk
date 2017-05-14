@@ -1,5 +1,5 @@
 export class Person {
-  selected: boolean;
+  selected: string;
   name: string;
   marry: boolean;
   fuck: boolean;

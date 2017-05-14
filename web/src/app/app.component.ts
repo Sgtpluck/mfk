@@ -13,6 +13,7 @@ import { PersonService } from './person.service';
 export class AppComponent {
   errorMessage: string;
   people: Person[];
+  stats: JSON[];
   mode = 'Observable';
 
   constructor (private personService: PersonService) {}
@@ -29,7 +30,7 @@ export class AppComponent {
 
   available_selected_disabled(person: Person, action: string): string {
     if (person[action] === true) { return 'selected'; }
-    if (person.selected === true) { return 'disabled'; }
+    if (person.selected !== "unselected") { return 'disabled'; }
     for (let people_person of this.people) {
       if (people_person[action] === true) { return 'disabled'; }
     }
@@ -44,25 +45,31 @@ export class AppComponent {
   }
 
   onSelect(person: Person, action: string): void {
-    if (person.selected === true && person[action] === true) {
-      person.selected = false;
+    if (person.selected === action) {
+      person.selected = "unselected";
       person[action] = false;
-    } else if (person.selected === true || this.action_selected(action)){
+    } else if (person.selected !== "unselected" || this.action_selected(action)){
       return;
     } else {
-      person.selected = true;
+      person.selected = action;
       person[action] = true;
     }
   };
 
   vote(): void {
     let finished: boolean = true;
+    let processedPeople = [];
     for (let person of this.people) {
-      if (person.selected === false ) { finished = false; }
+      processedPeople.push({'name': person.name, 'vote': person.selected});
+      if (person.selected === "unselected" ) { finished = false; }
     }
     if (finished) {
-      // post the results
+      this.personService.vote(processedPeople)
+                       .subscribe(
+                         stats => {this.stats = stats; this.getPeople()},
+                         error =>  this.errorMessage = <any>error);
     } else {
+      console.log("BAD");
       // give an error message
     }
   }
