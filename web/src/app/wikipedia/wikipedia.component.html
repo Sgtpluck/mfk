@@ -1,0 +1,10 @@
+<div>
+  <p>Who do you wanna add?</p>
+  <form>
+      <input type="text" [formControl]="term">
+    <button type="submit" (click)="attempt_to_add()">Submit</button>
+  </form>
+  <div *ngIf="isPerson">
+    THAT IS A PERSON.
+  </div>
+</div>
