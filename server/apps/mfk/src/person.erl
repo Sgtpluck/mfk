@@ -10,16 +10,17 @@
         ]).
 
 -export([
+         do_vote/1,
          fetch_three/0,
-         vote/1,
-         do_vote/1
+         insert/1,
+         vote/1
         ]).
 
--record(?MODULE, {id,
+-record(?MODULE, {
         name,
-        marry,
-        fuck,
-        kill
+        marry = 0,
+        fuck = 0,
+        kill = 0
     }).
 
 '#insert_fields'() ->
@@ -46,9 +47,8 @@ fetch_three() ->
     Ejson = [build_ejson(Person) || Person <- People],
     {[{<<"candidates">>, Ejson}]}.
 
-build_ejson(#person{id=Id, name=Name}) ->
+build_ejson(#person{name=Name}) ->
     {[
-        {<<"id">>, Id},
         {<<"name">>, Name},
         {<<"marry">>, false},
         {<<"fuck">>, false},
@@ -56,24 +56,28 @@ build_ejson(#person{id=Id, name=Name}) ->
         {<<"selected">>, <<"unselected">>}
     ]}.
 
-vote(PersonEjson) ->
-    Stats = [ do_vote(Person) || Person <- PersonEjson],
-    {[{<<"stats">>, Stats}]}.
-
 do_vote(Person) ->
     Name = ej:get([<<"name">>], Person),
     Action = erlang:binary_to_atom(ej:get([<<"vote">>], Person), utf8),
     [UpdatedPerson] = sqerl_rec:qfetch(person, Action, [Name]),
     build_stat_ejson(UpdatedPerson).
 
+insert(PersonEjson) ->
+    Name = ej:get([<<"name">>], PersonEjson),
+    Person = #person{name=Name},
+    sqerl_rec:insert(Person),
+    PersonEjson.
+
+vote(PersonEjson) ->
+    Stats = [ do_vote(Person) || Person <- PersonEjson],
+    {[{<<"stats">>, Stats}]}.
+
 build_stat_ejson(#person{
-                         id=Id,
                          name=Name,
                          marry=Marry,
                          fuck=Fuck,
                          kill=Kill}) ->
         {[
-            {<<"id">>, Id},
             {<<"name">>, Name},
             {<<"marry">>, Marry},
             {<<"fuck">>, Fuck},

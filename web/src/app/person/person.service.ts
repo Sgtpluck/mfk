@@ -12,6 +12,16 @@ export class PersonService {
   private peopleUrl = 'http://localhost:8080/';  // URL to web API
 
   constructor (private http: Http) {}
+  addPerson(person): Observable<Person[]> {
+    return this.http.post(this.peopleUrl, {'name': person})
+                   .map(this.extractPerson)
+                   .catch(this.handleError);
+  }
+  private extractPerson(res: Response) {
+    let body = res.json();
+    return body.person || { };
+  }
+
   getPeople(): Observable<Person[]> {
     return this.http.get(this.peopleUrl)
                    .map(this.extractData)
