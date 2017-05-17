@@ -23,8 +23,10 @@ export class WikipediaService {
     // this awful line is necessary because the wikipedia API uses the page ID
     // as a key, and also does not give you any way to get at that key. So, cool.
     let cats = Object.keys(wiki_data.query.pages).map(k => wiki_data.query.pages[k])[0].categories
-    for (let cat of cats) {
-      if (cat.title.match("birth")) { is_person = true; }
+    if (cats) {
+      for (let cat of cats) {
+        if (cat.title.match("birth")) { is_person = true; }
+      }
     }
     return is_person;
   }
