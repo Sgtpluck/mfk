@@ -25,6 +25,7 @@ export class WikipediaSearchComponent {
                             isPerson => {
                               if (isPerson) {
                                 this.addPerson();
+                                this.term = new FormControl();
                               } else {
                                 alert("Sorry, I couldn't confirm that that's a person!")
                               }

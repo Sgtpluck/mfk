@@ -59,7 +59,7 @@ th, td {
 }
 
 caption {
-  ffont-family: 'Bitter', cursive;
+  font-family: 'Bitter', cursive;
   padding: 20px;
   font-style: italic;
   caption-side: bottom;
